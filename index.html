@@ -32,14 +32,16 @@
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px); /* iOS Safari compatibility */
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
         
         .ios-glass-dark {
             background: rgba(31, 41, 55, 0.9);
             border: 1px solid rgba(55, 65, 81, 0.3);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px); /* iOS Safari compatibility */
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
         
         .day-section {
@@ -96,11 +98,17 @@
         .bg-gradient-dark {
             background: linear-gradient(to bottom, #374151, #1f2937);
         }
+        
+        /* Force iOS to render properly */
+        .force-ios-render {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-amber-50 to-orange-50 text-gray-900">
+<body class="bg-gradient-to-br from-amber-50 to-orange-50 text-gray-900 force-ios-render">
     <!-- Fixed Navigation Bar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 ios-glass-light border-b border-white/30 shadow-lg h-16">
+    <nav class="fixed top-0 left-0 right-0 z-50 ios-glass-light border-b border-white/30 shadow-lg h-16 force-ios-render">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex justify-between items-center h-full">
                 <div class="flex items-center space-x-3">
@@ -147,7 +155,7 @@
     </nav>
 
     <!-- Mobile Menu -->
-    <div id="mobileMenu" class="mobile-menu-container ios-glass-light border-b border-white/20">
+    <div id="mobileMenu" class="mobile-menu-container ios-glass-light border-b border-white/20 force-ios-render">
         <div class="px-4 py-3 space-y-3">
             <div class="flex items-center justify-center space-x-2 p-3 rounded-xl ios-glass-light border border-white/30">
                 <button id="mobileDecreaseFont" class="p-2 rounded-lg hover:bg-white/30 text-gray-700">
@@ -172,9 +180,9 @@
     </div>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="main-content force-ios-render">
         <!-- Header -->
-        <header class="shadow-sm border-b ios-glass-light border-white/20">
+        <header class="shadow-sm border-b ios-glass-light border-white/20 force-ios-render">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 <div class="flex items-center space-x-3 mb-4">
                     <div class="p-3 rounded-xl ios-glass-light border border-amber-200/50">
@@ -217,7 +225,7 @@
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <!-- Guidelines Section -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 ios-glass-light border border-white/30">
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 ios-glass-light border border-white/30 force-ios-render">
                 <h2 class="text-2xl font-bold mb-4 flex items-center">
                     <i class="fas fa-leaf text-green-500 mr-2"></i>
                     Jean's Kitchen Wisdom for Active Seniors
@@ -253,13 +261,13 @@
             <!-- Meal Plan Content -->
             <div id="mealPlanContainer" class="space-y-6">
                 <!-- Monday -->
-                <div id="monday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                <div id="monday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30 force-ios-render">
                     <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                         <h3 class="text-2xl font-bold text-white">Monday</h3>
                     </div>
                     <div class="p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
@@ -274,7 +282,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">30g protein</span>
@@ -289,7 +297,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">25g protein</span>
@@ -304,7 +312,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">25g protein</span>
@@ -330,13 +338,13 @@
                 </div>
 
                 <!-- Tuesday -->
-                <div id="tuesday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                <div id="tuesday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30 force-ios-render">
                     <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                         <h3 class="text-2xl font-bold text-white">Tuesday</h3>
                     </div>
                     <div class="p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">22g protein</span>
@@ -351,7 +359,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">32g protein</span>
@@ -366,7 +374,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
@@ -381,7 +389,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
@@ -407,13 +415,13 @@
                 </div>
 
                 <!-- Wednesday -->
-                <div id="wednesday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                <div id="wednesday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30 force-ios-render">
                     <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                         <h3 class="text-2xl font-bold text-white">Wednesday</h3>
                     </div>
                     <div class="p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">24g protein</span>
@@ -428,7 +436,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
@@ -443,7 +451,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">30g protein</span>
@@ -458,7 +466,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">18g protein</span>
@@ -484,13 +492,13 @@
                 </div>
 
                 <!-- Thursday -->
-                <div id="thursday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                <div id="thursday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30 force-ios-render">
                     <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                         <h3 class="text-2xl font-bold text-white">Thursday</h3>
                     </div>
                     <div class="p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">26g protein</span>
@@ -505,7 +513,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">22g protein</span>
@@ -520,7 +528,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">32g protein</span>
@@ -535,7 +543,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
@@ -561,13 +569,13 @@
                 </div>
 
                 <!-- Friday -->
-                <div id="friday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                <div id="friday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30 force-ios-render">
                     <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                         <h3 class="text-2xl font-bold text-white">Friday</h3>
                     </div>
                     <div class="p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">25g protein</span>
@@ -582,7 +590,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
@@ -597,7 +605,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">24g protein</span>
@@ -612,7 +620,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">23g protein</span>
@@ -638,13 +646,13 @@
                 </div>
 
                 <!-- Saturday -->
-                <div id="saturday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                <div id="saturday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30 force-ios-render">
                     <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                         <h3 class="text-2xl font-bold text-white">Saturday</h3>
                     </div>
                     <div class="p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
@@ -659,7 +667,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">30g protein</span>
@@ -674,7 +682,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">32g protein</span>
@@ -689,7 +697,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">18g protein</span>
@@ -715,13 +723,13 @@
                 </div>
 
                 <!-- Sunday -->
-                <div id="sunday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                <div id="sunday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30 force-ios-render">
                     <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                         <h3 class="text-2xl font-bold text-white">Sunday</h3>
                     </div>
                     <div class="p-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">22g protein</span>
@@ -736,7 +744,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
@@ -751,7 +759,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">26g protein</span>
@@ -766,7 +774,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30 force-ios-render">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
                                     <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">24g protein</span>
@@ -793,7 +801,7 @@
             </div>
 
             <!-- Footer Note -->
-            <div class="mt-8 bg-yellow-50 rounded-2xl p-6 mb-12 ios-glass-light border border-yellow-200/50">
+            <div class="mt-8 bg-yellow-50 rounded-2xl p-6 mb-12 ios-glass-light border border-yellow-200/50 force-ios-render">
                 <h3 class="text-lg font-semibold text-yellow-800 mb-2">Jean's Kitchen Note</h3>
                 <p class="text-yellow-700">
                     These recipes are crafted with love and care, just like I would make for my own family! 
@@ -806,7 +814,7 @@
     </div>
 
     <!-- Back to Top Button -->
-    <button id="backToTop" class="fixed bottom-6 right-6 p-3 rounded-full shadow-xl bg-amber-600/90 text-white hidden z-40">
+    <button id="backToTop" class="fixed bottom-6 right-6 p-3 rounded-full shadow-xl bg-amber-600/90 text-white hidden z-40 force-ios-render">
         <i class="fas fa-chevron-up"></i>
     </button>
 
@@ -881,7 +889,7 @@
         function toggleTheme() {
             if (currentTheme === 'light') {
                 currentTheme = 'dark';
-                document.body.className = 'bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100';
+                document.body.className = 'bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 force-ios-render';
                 document.querySelectorAll('.ios-glass-light').forEach(el => {
                     el.classList.remove('ios-glass-light');
                     el.classList.add('ios-glass-dark');
@@ -902,7 +910,7 @@
                 document.getElementById('mobileThemeToggle').innerHTML = '<i class="fas fa-sun"></i>';
             } else {
                 currentTheme = 'light';
-                document.body.className = 'bg-gradient-to-br from-amber-50 to-orange-50 text-gray-900';
+                document.body.className = 'bg-gradient-to-br from-amber-50 to-orange-50 text-gray-900 force-ios-render';
                 document.querySelectorAll('.ios-glass-dark').forEach(el => {
                     el.classList.remove('ios-glass-dark');
                     el.classList.add('ios-glass-light');
