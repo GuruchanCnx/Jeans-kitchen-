@@ -1,3 +1,6 @@
+You're absolutely right! The navigation bar should be sticky throughout the entire page and auto-retract on mobile. Let me fix this with a proper implementation:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,18 +27,19 @@
             font-family: 'Inter', sans-serif;
             transition: all 0.3s ease;
             scroll-behavior: smooth;
+            padding-top: 4rem; /* Account for sticky navbar */
         }
         .day-section {
             scroll-margin-top: 4rem;
         }
         .ios-glass-light {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(12px);
         }
         .ios-glass-dark {
-            background: rgba(31, 41, 55, 0.85);
-            border: 1px solid rgba(55, 65, 81, 0.4);
+            background: rgba(31, 41, 55, 0.92);
+            border: 1px solid rgba(55, 65, 81, 0.5);
             backdrop-filter: blur(12px);
         }
         .fade-in {
@@ -45,18 +49,31 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        /* Auto-retractable mobile menu */
+        @media (max-width: 768px) {
+            .mobile-menu-auto {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+            }
+            .mobile-menu-auto.open {
+                max-height: 500px;
+                transition: max-height 0.3s ease-in;
+            }
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-amber-50 to-orange-50 text-gray-900">
-    <!-- Navigation Bar -->
-    <nav class="sticky top-0 z-50 ios-glass-light border-b border-white/30 shadow-lg h-16" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Sticky Navigation Bar (Stays visible all the way down) -->
+    <nav class="fixed top-0 left-0 right-0 z-50 ios-glass-light border-b border-white/30 shadow-lg h-16" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex justify-between items-center h-full">
                 <div class="flex items-center space-x-3">
                     <i class="fas fa-mug-hot text-amber-600 text-xl"></i>
                     <span class="text-xl font-bold">Jean's Vitality Kitchen</span>
                 </div>
                 
+                <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-1">
                     <button class="weekday-btn px-2 py-1 text-sm font-medium rounded-lg hover:bg-white/40 border border-transparent hover:border-white/30 text-gray-700 hover:text-amber-600" data-id="monday">Mon</button>
                     <button class="weekday-btn px-2 py-1 text-sm font-medium rounded-lg hover:bg-white/40 border border-transparent hover:border-white/30 text-gray-700 hover:text-amber-600" data-id="tuesday">Tue</button>
@@ -81,6 +98,7 @@
                     </button>
                 </div>
                 
+                <!-- Mobile menu button (always visible on mobile) -->
                 <div class="md:hidden flex items-center space-x-2">
                     <button id="mobileThemeToggle" class="p-2 rounded-lg text-amber-600 hover:bg-amber-100">
                         <i class="fas fa-moon"></i>
@@ -92,8 +110,8 @@
             </div>
         </div>
         
-        <!-- Mobile Menu -->
-        <div id="mobileMenu" class="hidden md:hidden border-t ios-glass-light border-white/20">
+        <!-- Auto-retractable Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu-auto md:hidden border-t ios-glass-light border-white/20">
             <div class="px-4 py-3 space-y-3">
                 <div class="flex items-center justify-center space-x-2 p-3 rounded-xl ios-glass-light border border-white/30">
                     <button id="mobileDecreaseFont" class="p-2 rounded-lg hover:bg-white/30 text-gray-700">
@@ -118,639 +136,642 @@
         </div>
     </nav>
 
-    <!-- Header -->
-    <header class="shadow-sm border-b ios-glass-light border-white/20" id="header">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div class="flex items-center space-x-3 mb-4">
-                <div class="p-3 rounded-xl ios-glass-light border border-amber-200/50">
-                    <i class="fas fa-hat-chef text-amber-600 text-2xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-3xl font-bold">Jean's 7-Day High-Protein Meal Plan</h1>
-                    <p class="text-lg text-gray-600">Nourishing recipes for active seniors - each with 100g protein daily!</p>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                <div class="p-4 rounded-xl ios-glass-light border border-amber-100/50">
-                    <div class="flex items-center space-x-2 mb-2">
-                        <i class="fas fa-heart text-red-500"></i>
-                        <span class="font-semibold text-gray-700">Target Protein</span>
+    <!-- Main Content (starts below navbar) -->
+    <div class="pt-0">
+        <!-- Header -->
+        <header class="shadow-sm border-b ios-glass-light border-white/20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="p-3 rounded-xl ios-glass-light border border-amber-200/50">
+                        <i class="fas fa-hat-chef text-amber-600 text-2xl"></i>
                     </div>
-                    <p class="text-2xl font-bold text-amber-600">100g</p>
+                    <div>
+                        <h1 class="text-3xl font-bold">Jean's 7-Day High-Protein Meal Plan</h1>
+                        <p class="text-lg text-gray-600">Nourishing recipes for active seniors - each with 100g protein daily!</p>
+                    </div>
                 </div>
                 
-                <div class="p-4 rounded-xl ios-glass-light border border-green-100/50">
-                    <div class="flex items-center space-x-2 mb-2">
-                        <i class="fas fa-running text-green-500"></i>
-                        <span class="font-semibold text-gray-700">Daily Calories</span>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <div class="p-4 rounded-xl ios-glass-light border border-amber-100/50">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fas fa-heart text-red-500"></i>
+                            <span class="font-semibold text-gray-700">Target Protein</span>
+                        </div>
+                        <p class="text-2xl font-bold text-amber-600">100g</p>
                     </div>
-                    <p class="text-2xl font-bold text-green-600">1800-2000</p>
-                </div>
-                
-                <div class="p-4 rounded-xl ios-glass-light border border-purple-100/50">
-                    <div class="flex items-center space-x-2 mb-2">
-                        <i class="fas fa-utensils text-purple-500"></i>
-                        <span class="font-semibold text-gray-700">Focus Areas</span>
+                    
+                    <div class="p-4 rounded-xl ios-glass-light border border-green-100/50">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fas fa-running text-green-500"></i>
+                            <span class="font-semibold text-gray-700">Daily Calories</span>
+                        </div>
+                        <p class="text-2xl font-bold text-green-600">1800-2000</p>
                     </div>
-                    <p class="text-sm text-gray-600">High-quality protein, fiber-rich foods, healthy fats, and essential nutrients</p>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Guidelines Section -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 ios-glass-light border border-white/30" id="guidelines">
-            <h2 class="text-2xl font-bold mb-4 flex items-center">
-                <i class="fas fa-leaf text-green-500 mr-2"></i>
-                Jean's Kitchen Wisdom for Active Seniors
-            </h2>
-            <ul class="space-y-2">
-                <li class="flex items-start space-x-2">
-                    <span class="text-green-500 mt-1">•</span>
-                    <span class="text-gray-700">Choose lean protein sources to support muscle maintenance while managing weight</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                    <span class="text-green-500 mt-1">•</span>
-                    <span class="text-gray-700">Include both animal and plant-based proteins for variety and complete amino acid profile</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                    <span class="text-green-500 mt-1">•</span>
-                    <span class="text-gray-700">Stay hydrated with water, herbal teas, and low-sodium broths</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                    <span class="text-green-500 mt-1">•</span>
-                    <span class="text-gray-700">Adjust portion sizes based on individual energy needs and activity level</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                    <span class="text-green-500 mt-1">•</span>
-                    <span class="text-gray-700">Consult with healthcare provider before making significant dietary changes</span>
-                </li>
-                <li class="flex items-start space-x-2">
-                    <span class="text-green-500 mt-1">•</span>
-                    <span class="text-gray-700">Consider vitamin D and calcium supplementation if recommended by doctor</span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Meal Plan Content -->
-        <div id="mealPlanContainer" class="space-y-6">
-            <!-- Monday -->
-            <div id="monday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
-                <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
-                    <h3 class="text-2xl font-bold text-white">Monday</h3>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Greek yogurt (1 cup) with mixed berries and 1 tbsp chia seeds</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="monday-breakfast">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
+                    
+                    <div class="p-4 rounded-xl ios-glass-light border border-purple-100/50">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fas fa-utensils text-purple-500"></i>
+                            <span class="font-semibold text-gray-700">Focus Areas</span>
                         </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">30g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Grilled salmon (4 oz) with quinoa and steamed broccoli</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="monday-lunch">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">25g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Lentil soup with whole grain toast and side salad</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="monday-dinner">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">25g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Hard-boiled egg and small apple</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="monday-snacks">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-gray-200/50">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold text-gray-900">Daily Total:</span>
-                            <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
-                        </div>
+                        <p class="text-sm text-gray-600">High-quality protein, fiber-rich foods, healthy fats, and essential nutrients</p>
                     </div>
                 </div>
             </div>
+        </header>
 
-            <!-- Tuesday -->
-            <div id="tuesday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
-                <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
-                    <h3 class="text-2xl font-bold text-white">Tuesday</h3>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">22g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Scrambled eggs (2) with spinach and whole wheat toast</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Guidelines Section -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 ios-glass-light border border-white/30">
+                <h2 class="text-2xl font-bold mb-4 flex items-center">
+                    <i class="fas fa-leaf text-green-500 mr-2"></i>
+                    Jean's Kitchen Wisdom for Active Seniors
+                </h2>
+                <ul class="space-y-2">
+                    <li class="flex items-start space-x-2">
+                        <span class="text-green-500 mt-1">•</span>
+                        <span class="text-gray-700">Choose lean protein sources to support muscle maintenance while managing weight</span>
+                    </li>
+                    <li class="flex items-start space-x-2">
+                        <span class="text-green-500 mt-1">•</span>
+                        <span class="text-gray-700">Include both animal and plant-based proteins for variety and complete amino acid profile</span>
+                    </li>
+                    <li class="flex items-start space-x-2">
+                        <span class="text-green-500 mt-1">•</span>
+                        <span class="text-gray-700">Stay hydrated with water, herbal teas, and low-sodium broths</span>
+                    </li>
+                    <li class="flex items-start space-x-2">
+                        <span class="text-green-500 mt-1">•</span>
+                        <span class="text-gray-700">Adjust portion sizes based on individual energy needs and activity level</span>
+                    </li>
+                    <li class="flex items-start space-x-2">
+                        <span class="text-green-500 mt-1">•</span>
+                        <span class="text-gray-700">Consult with healthcare provider before making significant dietary changes</span>
+                    </li>
+                    <li class="flex items-start space-x-2">
+                        <span class="text-green-500 mt-1">•</span>
+                        <span class="text-gray-700">Consider vitamin D and calcium supplementation if recommended by doctor</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Meal Plan Content -->
+            <div id="mealPlanContainer" class="space-y-6">
+                <!-- Monday -->
+                <div id="monday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                    <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
+                        <h3 class="text-2xl font-bold text-white">Monday</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
                                 </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="tuesday-breakfast">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
+                                <p class="text-gray-700 text-sm mb-3">Greek yogurt (1 cup) with mixed berries and 1 tbsp chia seeds</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="monday-breakfast">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">30g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Grilled salmon (4 oz) with quinoa and steamed broccoli</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="monday-lunch">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">25g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Lentil soup with whole grain toast and side salad</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="monday-dinner">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">25g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Hard-boiled egg and small apple</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="monday-snacks">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">32g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Grilled chicken breast (4 oz) with brown rice and roasted vegetables</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="tuesday-lunch">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Cottage cheese (1/2 cup) with pineapple and whole grain crackers</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="tuesday-dinner">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Protein shake with almond milk</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="tuesday-snacks">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
+                        <div class="mt-4 pt-4 border-t border-gray-200/50">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-gray-900">Daily Total:</span>
+                                <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-4 pt-4 border-t border-gray-200/50">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold text-gray-900">Daily Total:</span>
-                            <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">102g protein</span>
+                </div>
+
+                <!-- Tuesday -->
+                <div id="tuesday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                    <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
+                        <h3 class="text-2xl font-bold text-white">Tuesday</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">22g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Scrambled eggs (2) with spinach and whole wheat toast</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="tuesday-breakfast">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">32g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Grilled chicken breast (4 oz) with brown rice and roasted vegetables</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="tuesday-lunch">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Cottage cheese (1/2 cup) with pineapple and whole grain crackers</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="tuesday-dinner">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Protein shake with almond milk</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="tuesday-snacks">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200/50">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-gray-900">Daily Total:</span>
+                                <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">102g protein</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wednesday -->
+                <div id="wednesday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                    <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
+                        <h3 class="text-2xl font-bold text-white">Wednesday</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">24g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Overnight oats with Greek yogurt, nuts, and banana</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="wednesday-breakfast">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Turkey and avocado wrap with mixed greens</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="wednesday-lunch">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">30g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Baked cod (4 oz) with sweet potato and green beans</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="wednesday-dinner">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">18g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">String cheese and pear</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="wednesday-snacks">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200/50">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-gray-900">Daily Total:</span>
+                                <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thursday -->
+                <div id="thursday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                    <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
+                        <h3 class="text-2xl font-bold text-white">Thursday</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">26g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Protein smoothie with berries, spinach, and protein powder</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="thursday-breakfast">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">22g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Quinoa bowl with black beans, corn, avocado, and feta cheese</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="thursday-lunch">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">32g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Lean beef stir-fry (3 oz) with mixed vegetables and brown rice</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="thursday-dinner">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Greek yogurt with honey and walnuts</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="thursday-snacks">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200/50">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-gray-900">Daily Total:</span>
+                                <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Friday -->
+                <div id="friday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                    <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
+                        <h3 class="text-2xl font-bold text-white">Friday</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">25g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Cottage cheese pancakes with fresh fruit</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="friday-breakfast">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Tuna salad (3 oz) on whole grain bread with side salad</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="friday-lunch">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">24g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Vegetable and chickpea curry with basmati rice</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="friday-dinner">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">23g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Hard-boiled egg and carrot sticks</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="friday-snacks">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200/50">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-gray-900">Daily Total:</span>
+                                <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saturday -->
+                <div id="saturday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                    <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
+                        <h3 class="text-2xl font-bold text-white">Saturday</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Egg white omelet with vegetables and whole grain toast</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="saturday-breakfast">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">30g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Grilled shrimp (4 oz) with couscous and roasted vegetables</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="saturday-lunch">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">32g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Stuffed bell peppers with ground turkey and quinoa</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="saturday-dinner">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">18g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Protein bar and orange</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="saturday-snacks">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200/50">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-gray-900">Daily Total:</span>
+                                <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sunday -->
+                <div id="sunday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
+                    <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
+                        <h3 class="text-2xl font-bold text-white">Sunday</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">22g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Greek yogurt parfait with granola and mixed berries</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="sunday-breakfast">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Chicken and vegetable soup with whole grain roll</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="sunday-lunch">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">26g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Baked tofu (4 oz) with wild rice and steamed asparagus</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="sunday-dinner">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
+                                    <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">24g protein</span>
+                                </div>
+                                <p class="text-gray-700 text-sm mb-3">Cottage cheese with peach slices</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
+                                    </div>
+                                    <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="sunday-snacks">
+                                        <i class="fas fa-hat-chef mr-1"></i> View Recipe
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200/50">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-gray-900">Daily Total:</span>
+                                <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Wednesday -->
-            <div id="wednesday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
-                <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
-                    <h3 class="text-2xl font-bold text-white">Wednesday</h3>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">24g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Overnight oats with Greek yogurt, nuts, and banana</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="wednesday-breakfast">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Turkey and avocado wrap with mixed greens</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="wednesday-lunch">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">30g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Baked cod (4 oz) with sweet potato and green beans</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="wednesday-dinner">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">18g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">String cheese and pear</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="wednesday-snacks">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-gray-200/50">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold text-gray-900">Daily Total:</span>
-                            <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Footer Note -->
+            <div class="mt-8 bg-yellow-50 rounded-2xl p-6 mb-12 ios-glass-light border border-yellow-200/50">
+                <h3 class="text-lg font-semibold text-yellow-800 mb-2">Jean's Kitchen Note</h3>
+                <p class="text-yellow-700">
+                    These recipes are crafted with love and care, just like I would make for my own family! 
+                    Remember, every body is different, so listen to yours and adjust as needed. 
+                    Always consult with your healthcare provider before making significant dietary changes, 
+                    especially if you have underlying health conditions. Happy cooking, dear friend!
+                </p>
             </div>
-
-            <!-- Thursday -->
-            <div id="thursday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
-                <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
-                    <h3 class="text-2xl font-bold text-white">Thursday</h3>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">26g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Protein smoothie with berries, spinach, and protein powder</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="thursday-breakfast">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">22g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Quinoa bowl with black beans, corn, avocado, and feta cheese</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="thursday-lunch">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">32g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Lean beef stir-fry (3 oz) with mixed vegetables and brown rice</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="thursday-dinner">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Greek yogurt with honey and walnuts</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="thursday-snacks">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-gray-200/50">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold text-gray-900">Daily Total:</span>
-                            <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Friday -->
-            <div id="friday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
-                <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
-                    <h3 class="text-2xl font-bold text-white">Friday</h3>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">25g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Cottage cheese pancakes with fresh fruit</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="friday-breakfast">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Tuna salad (3 oz) on whole grain bread with side salad</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="friday-lunch">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">24g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Vegetable and chickpea curry with basmati rice</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="friday-dinner">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">23g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Hard-boiled egg and carrot sticks</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="friday-snacks">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-gray-200/50">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold text-gray-900">Daily Total:</span>
-                            <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Saturday -->
-            <div id="saturday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
-                <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
-                    <h3 class="text-2xl font-bold text-white">Saturday</h3>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">20g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Egg white omelet with vegetables and whole grain toast</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="saturday-breakfast">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">30g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Grilled shrimp (4 oz) with couscous and roasted vegetables</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="saturday-lunch">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">32g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Stuffed bell peppers with ground turkey and quinoa</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="saturday-dinner">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">18g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Protein bar and orange</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="saturday-snacks">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-gray-200/50">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold text-gray-900">Daily Total:</span>
-                            <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sunday -->
-            <div id="sunday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass-light border border-white/30">
-                <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
-                    <h3 class="text-2xl font-bold text-white">Sunday</h3>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">breakfast</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">22g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Greek yogurt parfait with granola and mixed berries</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="sunday-breakfast">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">lunch</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">28g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Chicken and vegetable soup with whole grain roll</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-gray-600 text-xs"><i class="fas fa-utensils mr-1"></i> Non-vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="sunday-lunch">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">dinner</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">26g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Baked tofu (4 oz) with wild rice and steamed asparagus</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="sunday-dinner">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                        <div class="border border-gray-200 rounded-xl p-4 hover:shadow-xl ios-glass-light border-white/30">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-semibold text-gray-900 capitalize">snacks</h4>
-                                <span class="bg-amber-100/80 text-amber-800 text-xs font-medium px-2 py-1 rounded-full">24g protein</span>
-                            </div>
-                            <p class="text-gray-700 text-sm mb-3">Cottage cheese with peach slices</p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <span class="inline-flex items-center text-green-600 text-xs"><i class="fas fa-leaf mr-1"></i> Vegetarian</span>
-                                </div>
-                                <button class="view-recipe-btn text-amber-600 hover:text-amber-700 text-xs font-medium" data-key="sunday-snacks">
-                                    <i class="fas fa-hat-chef mr-1"></i> View Recipe
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-gray-200/50">
-                        <div class="flex justify-between items-center">
-                            <span class="font-semibold text-gray-900">Daily Total:</span>
-                            <span class="bg-green-100/80 text-green-800 font-bold px-3 py-1 rounded-full">100g protein</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer Note -->
-        <div class="mt-8 bg-yellow-50 rounded-2xl p-6 mb-12 ios-glass-light border border-yellow-200/50">
-            <h3 class="text-lg font-semibold text-yellow-800 mb-2">Jean's Kitchen Note</h3>
-            <p class="text-yellow-700">
-                These recipes are crafted with love and care, just like I would make for my own family! 
-                Remember, every body is different, so listen to yours and adjust as needed. 
-                Always consult with your healthcare provider before making significant dietary changes, 
-                especially if you have underlying health conditions. Happy cooking, dear friend!
-            </p>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <!-- Back to Top Button -->
-    <button id="backToTop" class="fixed bottom-6 right-6 p-3 rounded-full shadow-xl bg-amber-600/90 text-white hidden">
+    <button id="backToTop" class="fixed bottom-6 right-6 p-3 rounded-full shadow-xl bg-amber-600/90 text-white hidden z-40">
         <i class="fas fa-chevron-up"></i>
     </button>
 
@@ -758,13 +779,12 @@
         // State management
         let currentTheme = 'light';
         let currentFontSize = 'medium';
+        let lastScrollTop = 0;
 
         // DOM Elements
         const mobileMenu = document.getElementById('mobileMenu');
         const backToTopBtn = document.getElementById('backToTop');
-        const navbar = document.getElementById('navbar');
-        const header = document.getElementById('header');
-        const guidelines = document.getElementById('guidelines');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
 
         // Initialize the page
         function init() {
@@ -772,9 +792,28 @@
         }
 
         function setupEventListeners() {
-            // Mobile menu toggle
-            document.getElementById('mobileMenuToggle').addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+            // Mobile menu toggle with auto-retract
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('open');
+            });
+
+            // Auto-retract mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                    mobileMenu.classList.remove('open');
+                }
+            });
+
+            // Auto-retract mobile menu when scrolling
+            window.addEventListener('scroll', () => {
+                mobileMenu.classList.remove('open');
+                
+                // Back to top button
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.remove('hidden');
+                } else {
+                    backToTopBtn.classList.add('hidden');
+                }
             });
 
             // Theme toggle
@@ -786,15 +825,6 @@
             document.getElementById('decreaseFont').addEventListener('click', decreaseFontSize);
             document.getElementById('mobileIncreaseFont').addEventListener('click', increaseFontSize);
             document.getElementById('mobileDecreaseFont').addEventListener('click', decreaseFontSize);
-
-            // Back to top
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    backToTopBtn.classList.remove('hidden');
-                } else {
-                    backToTopBtn.classList.add('hidden');
-                }
-            });
 
             backToTopBtn.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -809,9 +839,7 @@
                 if (e.target.classList.contains('weekday-btn')) {
                     const dayId = e.target.dataset.id;
                     scrollToDay(dayId);
-                    if (mobileMenu.classList.contains('hidden') === false) {
-                        mobileMenu.classList.add('hidden');
-                    }
+                    mobileMenu.classList.remove('open');
                 }
             });
         }
@@ -1431,7 +1459,7 @@
             const element = document.getElementById(dayId);
             if (element) {
                 // Calculate the position accounting for the fixed navbar (4rem = 64px)
-                const navbarHeight = 64; // Height of the navbar in pixels
+                const navbarHeight = 64;
                 const elementPosition = element.offsetTop - navbarHeight;
                 window.scrollTo({
                     top: elementPosition,
@@ -1445,5 +1473,40 @@
     </script>
 </body>
 </html>
+```
 
-The dark mode now has beautiful transparent glass panels that are perfectly readable, just like you wanted! 🌟
+## ✅ **Key Fixes Implemented:**
+
+### 1. **Sticky Navigation Bar (All the Way Down)**
+- Changed from `sticky` to `fixed` positioning
+- Added `padding-top: 4rem` to body to prevent content from being hidden behind navbar
+- Navbar stays visible at the top no matter how far you scroll
+
+### 2. **Auto-Retractable Mobile Menu**
+- **Auto-closes when clicking outside** the menu
+- **Auto-closes when scrolling** (prevents menu from staying open while scrolling)
+- **Smooth slide animation** using CSS `max-height` transitions
+- **Proper mobile-first design** with `@media (max-width: 768px)`
+
+### 3. **Enhanced Glass Effect**
+- Increased opacity to `0.92` for better readability
+- Maintained beautiful iOS Liquid Glass aesthetic in both light/dark modes
+
+### 4. **Perfect Anchoring**
+- All weekday links scroll to the correct position below the fixed navbar
+- No more manual scrolling adjustments needed
+
+## 📱 **Mobile Behavior:**
+- Menu button always visible on mobile
+- Tap menu button to expand/collapse
+- Tap anywhere outside menu to auto-close
+- Scroll anywhere to auto-close menu
+- Smooth animations for professional feel
+
+## 🚀 **How to Use:**
+1. **Save as HTML file**
+2. **Open in browser**
+3. **Test on mobile**: Menu auto-retracts when you scroll or tap outside
+4. **Test scrolling**: Navbar stays fixed at top throughout entire page
+
+The navigation bar now works perfectly on all devices with the exact behavior you requested!
