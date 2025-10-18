@@ -26,26 +26,35 @@
             scroll-behavior: smooth;
             padding-top: 4rem;
         }
+        
+        /* iOS Safari compatible glass effect */
+        .ios-glass-light {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* iOS Safari compatibility */
+        }
+        
+        .ios-glass-dark {
+            background: rgba(31, 41, 55, 0.9);
+            border: 1px solid rgba(55, 65, 81, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* iOS Safari compatibility */
+        }
+        
         .day-section {
             scroll-margin-top: 4rem;
         }
-        .ios-glass-light {
-            background: rgba(255, 255, 255, 0.92);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(12px);
-        }
-        .ios-glass-dark {
-            background: rgba(31, 41, 55, 0.92);
-            border: 1px solid rgba(55, 65, 81, 0.5);
-            backdrop-filter: blur(12px);
-        }
+        
         .fade-in {
             animation: fadeIn 0.3s ease-in;
         }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
         /* Mobile menu positioning */
         .mobile-menu-container {
             position: fixed;
@@ -57,14 +66,40 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         }
+        
         .mobile-menu-container.open {
             max-height: 100vh;
             transition: max-height 0.3s ease-in;
         }
+        
+        /* Ensure proper contrast for iOS Safari */
+        .text-primary {
+            color: #1f2937;
+        }
+        
+        .text-primary-dark {
+            color: #f3f4f6;
+        }
+        
+        .text-secondary {
+            color: #6b7280;
+        }
+        
+        .text-secondary-dark {
+            color: #9ca3af;
+        }
+        
+        .bg-gradient-light {
+            background: linear-gradient(to bottom, #fef3c7, #f59e0b);
+        }
+        
+        .bg-gradient-dark {
+            background: linear-gradient(to bottom, #374151, #1f2937);
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-amber-50 to-orange-50 text-gray-900">
-    <!-- Fixed Navigation Bar (Stays at top on ALL devices) -->
+    <!-- Fixed Navigation Bar -->
     <nav class="fixed top-0 left-0 right-0 z-50 ios-glass-light border-b border-white/30 shadow-lg h-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex justify-between items-center h-full">
@@ -111,7 +146,7 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu (Fixed position below navbar) -->
+    <!-- Mobile Menu -->
     <div id="mobileMenu" class="mobile-menu-container ios-glass-light border-b border-white/20">
         <div class="px-4 py-3 space-y-3">
             <div class="flex items-center justify-center space-x-2 p-3 rounded-xl ios-glass-light border border-white/30">
@@ -798,14 +833,12 @@
 
             // Auto-retract mobile menu when clicking outside
             document.addEventListener('click', (e) => {
-                if (!mobileMenu.contains(e.target) && !mobileMenuToggle.contains(e.target) && 
-                    e.target.closest('.mobile-menu-toggle') !== mobileMenuToggle) {
+                if (!mobileMenu.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
                     mobileMenu.classList.remove('open');
                 }
             });
 
             // Auto-retract mobile menu when scrolling
-            let isScrolling;
             window.addEventListener('scroll', () => {
                 mobileMenu.classList.remove('open');
                 
@@ -815,13 +848,6 @@
                 } else {
                     backToTopBtn.classList.add('hidden');
                 }
-                
-                // Clear timeout
-                clearTimeout(isScrolling);
-                // Set timeout to hide menu after scrolling stops
-                isScrolling = setTimeout(() => {
-                    mobileMenu.classList.remove('open');
-                }, 100);
             });
 
             // Theme toggle
@@ -943,7 +969,7 @@
                 return;
             }
 
-            // Define recipes for each meal (abbreviated for brevity - full recipes included in final version)
+            // Define recipes for each meal
             const recipes = {
                 'monday-breakfast': {
                     prepTime: "5 minutes",
@@ -960,8 +986,475 @@
                         "If you'd like a touch of sweetness, drizzle with a little honey.",
                         "Give it a gentle stir and enjoy your morning fuel!"
                     ]
+                },
+                'monday-lunch': {
+                    prepTime: "20 minutes",
+                    ingredients: [
+                        "4 oz salmon fillet",
+                        "1/2 cup cooked quinoa",
+                        "1 cup broccoli florets",
+                        "1 tablespoon olive oil",
+                        "Lemon wedge, salt, and pepper to taste"
+                    ],
+                    instructions: [
+                        "Preheat your grill or oven to 400°F (200°C).",
+                        "Pat the salmon dry and season with salt, pepper, and a squeeze of lemon.",
+                        "Place the salmon on the grill or baking sheet and cook for 12-15 minutes until it flakes easily.",
+                        "While the salmon cooks, steam your broccoli until tender-crisp (about 5 minutes).",
+                        "Fluff your quinoa with a fork and serve everything together with another lemon wedge. So satisfying!"
+                    ]
+                },
+                'monday-dinner': {
+                    prepTime: "25 minutes",
+                    ingredients: [
+                        "1 cup cooked lentils (or 1 can, drained)",
+                        "2 cups vegetable broth",
+                        "1 carrot, diced",
+                        "1 celery stalk, diced",
+                        "1/2 onion, chopped",
+                        "1 clove garlic, minced",
+                        "1 slice whole grain bread, toasted",
+                        "Mixed greens with olive oil and vinegar"
+                    ],
+                    instructions: [
+                        "In a cozy pot, sauté the onion, carrot, and celery in a bit of olive oil until softened.",
+                        "Add the garlic and cook for another minute until fragrant.",
+                        "Pour in the vegetable broth and lentils, then simmer for 15-20 minutes.",
+                        "Season with salt, pepper, and maybe a pinch of cumin if you're feeling adventurous!",
+                        "Serve hot with your toasted whole grain bread and a simple side salad. Perfect for a relaxing evening!"
+                    ]
+                },
+                'monday-snacks': {
+                    prepTime: "12 minutes (plus cooling time)",
+                    ingredients: [
+                        "1 large egg",
+                        "1 small apple"
+                    ],
+                    instructions: [
+                        "Place your egg in a small pot and cover with cold water.",
+                        "Bring to a boil, then cover and remove from heat. Let it sit for 10-12 minutes.",
+                        "Transfer to cold water to stop cooking, then peel when cool.",
+                        "Pair with a crisp, juicy apple for the perfect afternoon pick-me-up!",
+                        "This combo keeps me going through my afternoon knitting sessions!"
+                    ]
+                },
+                'tuesday-breakfast': {
+                    prepTime: "10 minutes",
+                    ingredients: [
+                        "2 large eggs",
+                        "1 cup fresh spinach, chopped",
+                        "1 slice whole wheat toast",
+                        "1 teaspoon butter or olive oil",
+                        "Salt and pepper to taste"
+                    ],
+                    instructions: [
+                        "Crack your eggs into a bowl and whisk them up with a splash of water.",
+                        "Heat your butter or oil in a non-stick pan over medium heat.",
+                        "Add the spinach and let it wilt for about 30 seconds.",
+                        "Pour in the eggs and gently stir with a spatula until they're softly set.",
+                        "Toast your bread while the eggs cook, then serve everything together. Simple but so good!"
+                    ]
+                },
+                'tuesday-lunch': {
+                    prepTime: "30 minutes",
+                    ingredients: [
+                        "4 oz boneless, skinless chicken breast",
+                        "1/2 cup cooked brown rice",
+                        "1 cup mixed vegetables (bell peppers, zucchini, carrots)",
+                        "1 tablespoon olive oil",
+                        "Herbs of choice (rosemary, thyme, or oregano)",
+                        "Salt and pepper to taste"
+                    ],
+                    instructions: [
+                        "Preheat your oven to 425°F (220°C).",
+                        "Season the chicken breast with salt, pepper, and your favorite herbs.",
+                        "Toss your vegetables with olive oil, salt, and pepper on a baking sheet.",
+                        "Place the chicken on the same sheet and roast everything for 20-25 minutes.",
+                        "Fluff your brown rice and serve with the roasted chicken and veggies. My yoga energy is back!"
+                    ]
+                },
+                'tuesday-dinner': {
+                    prepTime: "5 minutes",
+                    ingredients: [
+                        "1/2 cup low-fat cottage cheese",
+                        "1/2 cup fresh pineapple chunks",
+                        "6-8 whole grain crackers"
+                    ],
+                    instructions: [
+                        "Scoop your cottage cheese into a pretty bowl.",
+                        "Top with sweet, juicy pineapple chunks - the combination is heavenly!",
+                        "Arrange your crackers on the side for some satisfying crunch.",
+                        "This is my go-to easy dinner when I've had a long day of activities.",
+                        "Sometimes I add a sprinkle of cinnamon for extra warmth!"
+                    ]
+                },
+                'tuesday-snacks': {
+                    prepTime: "5 minutes",
+                    ingredients: [
+                        "1 scoop vanilla protein powder",
+                        "1 cup unsweetened almond milk",
+                        "1/2 banana (optional for creaminess)",
+                        "Ice cubes (optional)"
+                    ],
+                    instructions: [
+                        "Add all ingredients to your blender - I use my trusty one that's been with me for years!",
+                        "Blend until smooth and creamy. If it's too thick, add a splash more almond milk.",
+                        "Pour into your favorite glass and enjoy immediately.",
+                        "Perfect after my morning walk or as an afternoon boost before knitting time!",
+                        "Feel free to add a tablespoon of peanut butter for extra staying power!"
+                    ]
+                },
+                'wednesday-breakfast': {
+                    prepTime: "5 minutes (plus overnight chilling)",
+                    ingredients: [
+                        "1/2 cup rolled oats",
+                        "1/4 cup Greek yogurt",
+                        "1/2 cup milk of choice",
+                        "1/2 banana, sliced",
+                        "1 tablespoon chopped nuts (walnuts or almonds)",
+                        "1 teaspoon maple syrup (optional)"
+                    ],
+                    instructions: [
+                        "In a mason jar or container with a lid, combine oats, Greek yogurt, and milk.",
+                        "Stir well, then top with banana slices and nuts.",
+                        "Cover and refrigerate overnight - it's like magic happens while you sleep!",
+                        "In the morning, give it a good stir and add a drizzle of maple syrup if desired.",
+                        "Grab it on your way to morning gymnastics - so convenient!"
+                    ]
+                },
+                'wednesday-lunch': {
+                    prepTime: "10 minutes",
+                    ingredients: [
+                        "3 oz sliced turkey breast",
+                        "1/4 avocado, sliced",
+                        "1 whole wheat tortilla",
+                        "Handful of mixed greens",
+                        "1 tablespoon hummus or mustard",
+                        "Sliced tomato and cucumber (optional)"
+                    ],
+                    instructions: [
+                        "Lay your tortilla flat on a clean surface.",
+                        "Spread hummus or mustard evenly over the surface.",
+                        "Layer on the turkey slices, then add avocado, greens, and any extra veggies.",
+                        "Roll it up tightly, tucking in the sides as you go.",
+                        "Slice in half and pack for lunch. My walking group always asks for the recipe!"
+                    ]
+                },
+                'wednesday-dinner': {
+                    prepTime: "35 minutes",
+                    ingredients: [
+                        "4 oz cod fillet",
+                        "1 medium sweet potato, cubed",
+                        "1 cup green beans, trimmed",
+                        "1 tablespoon olive oil",
+                        "Lemon juice, garlic powder, salt, and pepper"
+                    ],
+                    instructions: [
+                        "Preheat oven to 400°F (200°C).",
+                        "Toss sweet potato cubes with olive oil, salt, and pepper. Roast for 20 minutes.",
+                        "Add green beans to the pan and continue roasting for 10 more minutes.",
+                        "Season cod with lemon juice, garlic powder, salt, and pepper.",
+                        "Place cod on a separate baking sheet and bake for 12-15 minutes until flaky.",
+                        "Everything comes out perfectly timed - dinner is served!"
+                    ]
+                },
+                'wednesday-snacks': {
+                    prepTime: "3 minutes",
+                    ingredients: [
+                        "1 string cheese",
+                        "1 ripe pear, sliced"
+                    ],
+                    instructions: [
+                        "Simply peel and slice your pear into bite-sized pieces.",
+                        "Unwrap your string cheese and you're ready to go!",
+                        "The sweet pear and savory cheese make such a satisfying combination.",
+                        "I keep this combo in my bag for post-yoga snacks. So easy and delicious!"
+                    ]
+                },
+                'thursday-breakfast': {
+                    prepTime: "5 minutes",
+                    ingredients: [
+                        "1 scoop protein powder",
+                        "1 cup mixed berries (fresh or frozen)",
+                        "1 cup baby spinach",
+                        "1 cup unsweetened almond milk",
+                        "1/2 banana",
+                        "Ice cubes"
+                    ],
+                    instructions: [
+                        "Add spinach and almond milk to your blender first - this helps it blend smoothly!",
+                        "Add berries, banana, protein powder, and ice cubes.",
+                        "Blend until completely smooth and creamy - no green bits visible!",
+                        "Pour into your favorite glass and enjoy immediately.",
+                        "This gives me the energy I need for my morning coffee and book club prep!"
+                    ]
+                },
+                'thursday-lunch': {
+                    prepTime: "10 minutes",
+                    ingredients: [
+                        "1/2 cup cooked quinoa",
+                        "1/4 cup black beans, rinsed",
+                        "2 tablespoons corn kernels",
+                        "1/4 avocado, diced",
+                        "2 tablespoons crumbled feta cheese",
+                        "Lime juice, olive oil, salt, and cilantro"
+                    ],
+                    instructions: [
+                        "Fluff your cooked quinoa in a bowl.",
+                        "Add black beans, corn, and diced avocado.",
+                        "Sprinkle with crumbled feta cheese.",
+                        "Drizzle with lime juice and olive oil, then season with salt.",
+                        "Top with fresh cilantro if you have it. So colorful and satisfying!",
+                        "Perfect for lunch after my morning walk around the neighborhood."
+                    ]
+                },
+                'thursday-dinner': {
+                    prepTime: "15 minutes",
+                    ingredients: [
+                        "3 oz lean beef strips",
+                        "1 cup mixed stir-fry vegetables",
+                        "1/2 cup cooked brown rice",
+                        "1 tablespoon low-sodium soy sauce",
+                        "1 teaspoon sesame oil",
+                        "1 clove garlic, minced",
+                        "1 teaspoon ginger, grated"
+                    ],
+                    instructions: [
+                        "Heat sesame oil in a large skillet or wok over high heat.",
+                        "Add beef strips and stir-fry for 2-3 minutes until browned.",
+                        "Add garlic and ginger, cook for 30 seconds until fragrant.",
+                        "Toss in mixed vegetables and stir-fry for 3-4 minutes until crisp-tender.",
+                        "Add soy sauce and stir to combine. Serve over brown rice.",
+                        "Quick, flavorful, and perfect for busy evenings before my knitting circle!"
+                    ]
+                },
+                'thursday-snacks': {
+                    prepTime: "3 minutes",
+                    ingredients: [
+                        "3/4 cup Greek yogurt",
+                        "1 teaspoon honey",
+                        "1 tablespoon chopped walnuts"
+                    ],
+                    instructions: [
+                        "Scoop Greek yogurt into a small bowl.",
+                        "Drizzle with honey - just a little goes a long way!",
+                        "Sprinkle with chopped walnuts for crunch and healthy fats.",
+                        "This is my favorite afternoon treat with a cup of herbal tea.",
+                        "The walnuts remind me of the ones my grandmother used to keep in her kitchen!"
+                    ]
+                },
+                'friday-breakfast': {
+                    prepTime: "15 minutes",
+                    ingredients: [
+                        "1/2 cup cottage cheese",
+                        "2 eggs",
+                        "1/4 cup oat flour or regular flour",
+                        "1/2 teaspoon baking powder",
+                        "Fresh fruit for topping",
+                        "Maple syrup (optional)"
+                    ],
+                    instructions: [
+                        "In a blender, combine cottage cheese, eggs, flour, and baking powder.",
+                        "Blend until smooth - the cottage cheese disappears completely!",
+                        "Heat a non-stick pan over medium heat and lightly grease with oil or butter.",
+                        "Pour 1/4 cup portions of batter and cook for 2-3 minutes per side.",
+                        "Serve with fresh fruit and a light drizzle of maple syrup if desired.",
+                        "These are so fluffy and satisfying - perfect for a leisurely Friday morning with my coffee!"
+                    ]
+                },
+                'friday-lunch': {
+                    prepTime: "10 minutes",
+                    ingredients: [
+                        "3 oz canned tuna in water, drained",
+                        "1 tablespoon Greek yogurt or light mayo",
+                        "1 teaspoon Dijon mustard",
+                        "Celery and red onion, finely chopped",
+                        "2 slices whole grain bread",
+                        "Mixed greens with vinaigrette"
+                    ],
+                    instructions: [
+                        "In a bowl, mix tuna with Greek yogurt, mustard, celery, and onion.",
+                        "Season with salt and pepper to taste.",
+                        "Toast your bread slices if you like them crispy.",
+                        "Spread the tuna mixture on one slice and top with the other.",
+                        "Serve with a fresh side salad dressed with your favorite vinaigrette.",
+                        "My go-to lunch that keeps me energized for afternoon activities!"
+                    ]
+                },
+                'friday-dinner': {
+                    prepTime: "25 minutes",
+                    ingredients: [
+                        "1/2 cup cooked chickpeas",
+                        "1 cup mixed vegetables (cauliflower, peas, carrots)",
+                        "1/2 cup coconut milk",
+                        "1 tablespoon curry powder",
+                        "1/2 onion, chopped",
+                        "1 clove garlic, minced",
+                        "1/2 cup cooked basmati rice"
+                    ],
+                    instructions: [
+                        "Sauté onion and garlic in a pot until softened.",
+                        "Add curry powder and cook for 1 minute until fragrant.",
+                        "Add vegetables and cook for 5 minutes, stirring occasionally.",
+                        "Pour in coconut milk and add chickpeas. Simmer for 10-15 minutes.",
+                        "Season with salt and serve over fluffy basmati rice.",
+                        "So comforting and perfect for a relaxing Friday evening with a good book!"
+                    ]
+                },
+                'friday-snacks': {
+                    prepTime: "5 minutes (plus egg prep time)",
+                    ingredients: [
+                        "1 hard-boiled egg",
+                        "1/2 cup carrot sticks"
+                    ],
+                    instructions: [
+                        "Prepare your hard-boiled egg ahead of time (see Monday's snack instructions).",
+                        "Peel and slice the egg in half.",
+                        "Cut carrots into sticks - I like them thick enough to be satisfying!",
+                        "Pack together for a protein-packed, crunchy snack.",
+                        "This combo keeps me going through my evening knitting projects!"
+                    ]
+                },
+                'saturday-breakfast': {
+                    prepTime: "12 minutes",
+                    ingredients: [
+                        "3 egg whites",
+                        "1/4 cup diced vegetables (bell peppers, onions, spinach)",
+                        "1 slice whole grain toast",
+                        "1 teaspoon olive oil",
+                        "Salt, pepper, and herbs to taste"
+                    ],
+                    instructions: [
+                        "Whisk egg whites with a splash of water and seasonings.",
+                        "Heat olive oil in a non-stick pan over medium heat.",
+                        "Add vegetables and sauté until softened, about 3 minutes.",
+                        "Pour in egg whites and cook, lifting edges to let uncooked egg flow underneath.",
+                        "When almost set, fold in half and slide onto your plate with toast.",
+                        "Light but satisfying - perfect before my Saturday morning yoga class!"
+                    ]
+                },
+                'saturday-lunch': {
+                    prepTime: "20 minutes",
+                    ingredients: [
+                        "4 oz shrimp, peeled and deveined",
+                        "1/2 cup cooked couscous",
+                        "1 cup mixed roasted vegetables",
+                        "1 tablespoon olive oil",
+                        "Lemon juice, garlic, salt, and pepper",
+                        "Fresh parsley for garnish"
+                    ],
+                    instructions: [
+                        "Marinate shrimp in olive oil, lemon juice, garlic, salt, and pepper for 10 minutes.",
+                        "Grill or sauté shrimp for 2-3 minutes per side until pink and opaque.",
+                        "Fluff couscous with a fork and mix with a little olive oil and lemon juice.",
+                        "Toss roasted vegetables with fresh parsley.",
+                        "Plate everything together and squeeze extra lemon on top.",
+                        "So fresh and light - perfect for a Saturday lunch after my morning walk!"
+                    ]
+                },
+                'saturday-dinner': {
+                    prepTime: "45 minutes",
+                    ingredients: [
+                        "2 bell peppers, halved and seeded",
+                        "3 oz lean ground turkey",
+                        "1/4 cup cooked quinoa",
+                        "1/4 cup diced tomatoes",
+                        "1/4 onion, chopped",
+                        "1 clove garlic, minced",
+                        "Italian herbs, salt, and pepper"
+                    ],
+                    instructions: [
+                        "Preheat oven to 375°F (190°C).",
+                        "Sauté onion and garlic until soft, then add ground turkey and cook until browned.",
+                        "Stir in quinoa, tomatoes, and seasonings. Cook for 2 more minutes.",
+                        "Stuff the mixture into bell pepper halves and place in a baking dish.",
+                        "Cover with foil and bake for 25 minutes, then uncover and bake 10 more minutes.",
+                        "So hearty and satisfying - my favorite weekend dinner recipe!"
+                    ]
+                },
+                'saturday-snacks': {
+                    prepTime: "2 minutes",
+                    ingredients: [
+                        "1 high-protein bar (20g+ protein)",
+                        "1 medium orange"
+                    ],
+                    instructions: [
+                        "Choose a protein bar with minimal added sugar and at least 20g protein.",
+                        "Peel your orange and separate into segments.",
+                        "Enjoy together for a perfect balance of protein and vitamin C!",
+                        "I always pack this combo in my bag for post-gymnastics fuel.",
+                        "The orange reminds me of Sunday mornings with my grandchildren!"
+                    ]
+                },
+                'sunday-breakfast': {
+                    prepTime: "5 minutes",
+                    ingredients: [
+                        "1 cup Greek yogurt",
+                        "1/4 cup low-sugar granola",
+                        "1/2 cup mixed berries",
+                        "1 teaspoon honey (optional)"
+                    ],
+                    instructions: [
+                        "In a glass or bowl, layer half the Greek yogurt.",
+                        "Add half the berries and a sprinkle of granola.",
+                        "Repeat with remaining yogurt, berries, and granola.",
+                        "Drizzle with honey if desired for a touch of sweetness.",
+                        "So pretty and delicious - perfect for a leisurely Sunday morning with my coffee and book!",
+                        "I love making this while listening to my favorite Sunday morning radio show."
+                    ]
+                },
+                'sunday-lunch': {
+                    prepTime: "15 minutes",
+                    ingredients: [
+                        "3 oz cooked chicken, shredded",
+                        "2 cups chicken broth",
+                        "1/2 cup mixed vegetables (carrots, celery, peas)",
+                        "1/4 cup cooked rice or noodles",
+                        "1 whole grain dinner roll",
+                        "Fresh herbs (parsley or thyme)"
+                    ],
+                    instructions: [
+                        "In a pot, bring chicken broth to a simmer.",
+                        "Add vegetables and cook until tender, about 8-10 minutes.",
+                        "Stir in shredded chicken and cooked rice/noodles. Heat through.",
+                        "Season with salt, pepper, and fresh herbs.",
+                        "Serve hot with your whole grain roll on the side.",
+                        "So comforting and perfect for Sunday lunch while planning my week ahead!"
+                    ]
+                },
+                'sunday-dinner': {
+                    prepTime: "35 minutes",
+                    ingredients: [
+                        "4 oz extra-firm tofu, pressed and cubed",
+                        "1/2 cup cooked wild rice blend",
+                        "1 cup asparagus spears",
+                        "1 tablespoon soy sauce or tamari",
+                        "1 teaspoon sesame oil",
+                        "1 clove garlic, minced"
+                    ],
+                    instructions: [
+                        "Preheat oven to 400°F (200°C).",
+                        "Toss tofu cubes with soy sauce, sesame oil, and garlic.",
+                        "Spread on a baking sheet and bake for 25-30 minutes, flipping halfway.",
+                        "Steam asparagus until bright green and tender-crisp, about 5 minutes.",
+                        "Fluff wild rice and serve with crispy tofu and asparagus.",
+                        "A peaceful, nourishing end to the week - perfect before my Sunday evening knitting!"
+                    ]
+                },
+                'sunday-snacks': {
+                    prepTime: "3 minutes",
+                    ingredients: [
+                        "1/2 cup cottage cheese",
+                        "1/2 fresh peach, sliced (or canned in juice)"
+                    ],
+                    instructions: [
+                        "Scoop cottage cheese into a small bowl.",
+                        "Top with sweet peach slices - fresh in summer, canned works year-round!",
+                        "The combination of creamy and sweet is absolutely delightful.",
+                        "This is my favorite evening snack while reading before bed.",
+                        "Sometimes I add a sprinkle of cinnamon for extra coziness!"
+                    ]
                 }
-                // ... (all other recipes would be here in the complete version)
             };
 
             const recipe = recipes[key];
