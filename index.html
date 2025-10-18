@@ -23,9 +23,11 @@
         body {
             font-family: 'Inter', sans-serif;
             transition: all 0.3s ease;
+            scroll-behavior: smooth;
         }
-        .scroll-mt-24 {
-            scroll-margin-top: 6rem;
+        /* Fixed: Proper scroll margin to account for sticky navbar (64px = 4rem) */
+        .day-section {
+            scroll-margin-top: 4rem;
         }
         .backdrop-blur-md {
             backdrop-filter: blur(12px);
@@ -52,9 +54,9 @@
 </head>
 <body class="bg-gradient-to-br from-amber-50 to-orange-50 text-gray-900">
     <!-- Navigation Bar -->
-    <nav class="sticky top-0 z-50 ios-glass border-b border-white/20 shadow-lg">
+    <nav class="sticky top-0 z-50 ios-glass border-b border-white/20 shadow-lg h-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex justify-between items-center h-full">
                 <div class="flex items-center space-x-3">
                     <i class="fas fa-mug-hot text-amber-600 text-xl"></i>
                     <span class="text-xl font-bold">Jean's Vitality Kitchen</span>
@@ -203,7 +205,7 @@
         <!-- Meal Plan Content -->
         <div id="mealPlanContainer" class="space-y-6">
             <!-- Monday -->
-            <div id="monday" class="bg-white rounded-2xl shadow-lg overflow-hidden scroll-mt-24 ios-glass border border-white/30">
+            <div id="monday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass border border-white/30">
                 <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                     <h3 class="text-2xl font-bold text-white">Monday</h3>
                 </div>
@@ -280,7 +282,7 @@
             </div>
 
             <!-- Tuesday -->
-            <div id="tuesday" class="bg-white rounded-2xl shadow-lg overflow-hidden scroll-mt-24 ios-glass border border-white/30">
+            <div id="tuesday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass border border-white/30">
                 <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                     <h3 class="text-2xl font-bold text-white">Tuesday</h3>
                 </div>
@@ -357,7 +359,7 @@
             </div>
 
             <!-- Wednesday -->
-            <div id="wednesday" class="bg-white rounded-2xl shadow-lg overflow-hidden scroll-mt-24 ios-glass border border-white/30">
+            <div id="wednesday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass border border-white/30">
                 <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                     <h3 class="text-2xl font-bold text-white">Wednesday</h3>
                 </div>
@@ -434,7 +436,7 @@
             </div>
 
             <!-- Thursday -->
-            <div id="thursday" class="bg-white rounded-2xl shadow-lg overflow-hidden scroll-mt-24 ios-glass border border-white/30">
+            <div id="thursday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass border border-white/30">
                 <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                     <h3 class="text-2xl font-bold text-white">Thursday</h3>
                 </div>
@@ -511,7 +513,7 @@
             </div>
 
             <!-- Friday -->
-            <div id="friday" class="bg-white rounded-2xl shadow-lg overflow-hidden scroll-mt-24 ios-glass border border-white/30">
+            <div id="friday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass border border-white/30">
                 <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                     <h3 class="text-2xl font-bold text-white">Friday</h3>
                 </div>
@@ -588,7 +590,7 @@
             </div>
 
             <!-- Saturday -->
-            <div id="saturday" class="bg-white rounded-2xl shadow-lg overflow-hidden scroll-mt-24 ios-glass border border-white/30">
+            <div id="saturday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass border border-white/30">
                 <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                     <h3 class="text-2xl font-bold text-white">Saturday</h3>
                 </div>
@@ -665,7 +667,7 @@
             </div>
 
             <!-- Sunday -->
-            <div id="sunday" class="bg-white rounded-2xl shadow-lg overflow-hidden scroll-mt-24 ios-glass border border-white/30">
+            <div id="sunday" class="day-section bg-white rounded-2xl shadow-lg overflow-hidden ios-glass border border-white/30">
                 <div class="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4">
                     <h3 class="text-2xl font-bold text-white">Sunday</h3>
                 </div>
@@ -1433,7 +1435,13 @@
         function scrollToDay(dayId) {
             const element = document.getElementById(dayId);
             if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Calculate the position accounting for the fixed navbar (4rem = 64px)
+                const navbarHeight = 64; // Height of the navbar in pixels
+                const elementPosition = element.offsetTop - navbarHeight;
+                window.scrollTo({
+                    top: elementPosition,
+                    behavior: 'smooth'
+                });
             }
         }
 
@@ -1442,25 +1450,3 @@
     </script>
 </body>
 </html>
-```
-
-## 🎉 **Now You Have the Complete Preview!**
-
-This HTML file includes:
-
-✅ **All 7 weekdays** (Monday through Sunday)  
-✅ **Complete navigation bar** with all days visible  
-✅ **Working theme toggle** (light/dark mode)  
-✅ **Font size controls** that actually work  
-✅ **Recipe expand/collapse functionality**  
-✅ **iOS Liquid Glass design** with frosted glass effects  
-✅ **Responsive design** that works on mobile and desktop  
-
-## 🚀 **How to Use:**
-
-1. **Copy** all the code above
-2. **Save it** as `jeans-kitchen.html` on your computer
-3. **Double-click** the file to open it in your web browser
-4. **See the complete working website** with all features!
-
-You'll see all weekdays in the navigation bar, and you can click on any day to scroll to it. The theme toggle and font size controls work perfectly!
